@@ -1,0 +1,26 @@
+{
+  "name": "Repro Web SDK Viewer",
+  "version": "1.0",
+  "description": "Build an Extension!",
+  "permissions": ["declarativeContent", "storage"],
+  "background": {
+    "scripts": ["background.js"],
+    "persistent": false
+  },
+  "page_action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "images/logo.ico",
+      "32": "images/logo.ico",
+      "48": "images/logo.ico",
+      "128": "images/logo.ico"
+    }
+  },
+  "icons": {
+    "16": "images/logo.ico",
+    "32": "images/logo.ico",
+    "48": "images/logo.ico",
+    "128": "images/logo.ico"
+  },
+  "manifest_version": 2
+}

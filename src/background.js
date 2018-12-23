@@ -1,4 +1,4 @@
-const Decoder = new TextDecoder("utf-8")
+const Decoder = new TextDecoder('utf-8')
 
 chrome.runtime.onMessage.addListener((req, sender) => {
   if (sender.tab && req.reproDetected) {
@@ -6,8 +6,8 @@ chrome.runtime.onMessage.addListener((req, sender) => {
       chrome.browserAction.setIcon({
         tabId: sender.tab.id,
         path: {
-          19: "images/logo-active-19px.png",
-          38: "images/logo-active-38px.png",
+          19: 'images/logo-active-19px.png',
+          38: 'images/logo-active-38px.png',
         }
       })
 
@@ -21,7 +21,7 @@ chrome.runtime.onMessage.addListener((req, sender) => {
 })
 
 chrome.webRequest.onBeforeRequest.addListener((details) => {
-  if (details.url.includes("clip-transporter.reproio.com/active/upload") && details.method === "POST") {
+  if (details.url.includes('clip-transporter.reproio.com/active/upload') && details.method === 'POST') {
     const body = Decoder.decode(details.requestBody.raw[0].bytes)
     const clip = JSON.parse(body).clip
 
@@ -50,14 +50,14 @@ chrome.webRequest.onBeforeRequest.addListener((details) => {
     }
   }
 }, {
-  urls: ["<all_urls>"]
-}, ["requestBody"]);
+  urls: ['<all_urls>']
+}, ['requestBody']);
 
 
 // TODO: リクエストが成功したら◯つける、みたいなのやりたい
 chrome.webRequest.onCompleted.addListener((details) => {
-  if (details.url.includes("clip-transporter.reproio.com/active/upload") && details.method === "POST") {
+  if (details.url.includes('clip-transporter.reproio.com/active/upload') && details.method === 'POST') {
   }
 }, {
-  urls: ["<all_urls>"]
+  urls: ['<all_urls>']
 }, []);

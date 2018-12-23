@@ -1,6 +1,6 @@
-# Web SDK debugger
+# Web SDK Inspector
 
-A tool to debug and inspect Web SDK and its data
+Chrome Extension for inspecting Repro Web SDK
 
 ## ToDos
 

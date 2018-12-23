@@ -1,28 +1,25 @@
-console.log('hi from detector')
+const detect = (win) => {
+  const i = setInterval(() => {
+    win.postMessage({
+      reproDetected: !!window.reproio,
+      clipJSON: JSON.stringify(reproio._clipJSON),
+    }, '*')
+  }, 2000)
+  if (!window.reproio) clearInterval(i);
+}
+
+const installScript = (fn) => {
+  const source = ';(' + fn.toString() + ')(window)'
+  const script = document.createElement('script')
+  script.textContent = source
+  document.documentElement.appendChild(script)
+  script.parentNode.removeChild(script)
+}
 
 window.addEventListener('message', e => {
   chrome.runtime.sendMessage(e.data)
 })
 
-function detect(win) {
-  setTimeout(() => {
-    win.postMessage({
-      reproDetected: !!window.reproio,
-      reproio: JSON.stringify(reproio._clipJSON),
-    }, '*')
-  }, 100)
-}
-
-// inject the hook
 if (document instanceof HTMLDocument) {
   installScript(detect)
-}
-
-function installScript(fn) {
-  const source = ';(' + fn.toString() + ')(window)'
-
-  const script = document.createElement('script')
-  script.textContent = source
-  document.documentElement.appendChild(script)
-  script.parentNode.removeChild(script)
 }

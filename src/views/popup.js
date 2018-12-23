@@ -126,3 +126,12 @@ for (let i = 0; i < els.length; i++) {
     });
   })
 }
+
+window.addEventListener('keydown', ev => {
+  if (ev.keyCode !== 9) return false;
+
+  const target = [...document.querySelectorAll('.mdl-layout__tab')].find(el => {
+    return !el.classList.contains('is-active')
+  })
+  target.click();
+})

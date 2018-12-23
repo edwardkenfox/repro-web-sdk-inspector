@@ -1,8 +1,10 @@
 body {
-  width: 480px;
+  width: 600px;
   height: 480px;
 }
-
+.mdl-data-table th {
+  max-width: 21vw;
+}
 .mdl-data-table td {
   max-width: 50vw;
   overflow: scroll;

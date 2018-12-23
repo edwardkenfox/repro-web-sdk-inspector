@@ -108,3 +108,21 @@ document.getElementById('delete').addEventListener('click', () => {
   removeStorage()
   window.close()
 })
+
+const els = document.getElementsByClassName('copy')
+for (let i = 0; i < els.length; i++) {
+  let text = ''
+  els[i].addEventListener('click', ev => {
+    const targetId = ev.currentTarget.getAttribute('value')
+    text = document.getElementById(targetId).innerText
+    chrome.tabs.query({
+      active: true,
+      currentWindow: true
+    }, tabs => {
+      chrome.runtime.sendMessage({
+        text: text,
+        copyToClipBoad: true,
+      });
+    });
+  })
+}

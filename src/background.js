@@ -1,3 +1,16 @@
+const saveToClipboard = str => {
+  var textArea = document.createElement('textarea');
+  textArea.style.cssText = 'position:absolute;left:-100%';
+
+  document.body.appendChild(textArea);
+
+  textArea.value = str;
+  textArea.select();
+  document.execCommand('copy');
+
+  document.body.removeChild(textArea);
+}
+
 const Decoder = new TextDecoder('utf-8')
 
 chrome.runtime.onMessage.addListener((req, sender) => {
@@ -17,6 +30,8 @@ chrome.runtime.onMessage.addListener((req, sender) => {
       })
     }
     chrome.storage.local.set({'clipJSON': JSON.parse(req.clipJSON)});
+  } else if (req.copyToClipBoad) {
+    saveToClipboard(req.text);
   }
 })
 

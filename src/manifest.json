@@ -1,14 +1,14 @@
 {
-  "name": "Repro Web SDK Viewer",
+  "name": "Web SDK Inspector",
   "version": "1.0",
-  "description": "DEBUG!",
+  "description": "Don't worry, debug happy.",
   "browser_action": {
     "default_icon": {
       "16": "images/logo-inactive.png",
       "48": "images/logo-inactive.png",
       "128": "images/logo-inactive.png"
     },
-    "default_title": "Repro Web SDK Viewer",
+    "default_title": "Web SDK Inspector",
     "default_popup": "views/not_detected.html"
   },
   "background": {

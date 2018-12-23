@@ -1,79 +1,96 @@
-// TODO: もろもろリファクタ
+//
+// DOM manipulation functions
+//
+const updateClip = clip => {
+  const properties = ['token', 'idfv', 'user_annotation', 'sdk_version', 'ip_address', 'device', 'network', 'os', 'os_version', 'browser', 'browser_version', 'user_agent', 'push_enabled']
+  properties.forEach(prop => {
+    document.getElementById(prop).innerText = clip[prop]
+  })
+}
+const appendLog = (type, content) => {
+  const table = document.getElementById('log')
 
+  let newRow = table.insertRow(1);
+  let newCell = newRow.insertCell(0);
+  let newText = document.createTextNode(content);
+  newCell.appendChild(newText);
+
+  newCell = newRow.insertCell(0);
+  newText = document.createTextNode(type);
+  newCell.appendChild(newText);
+}
+const removeStorage = () => {
+  chrome.storage.local.remove('clipJSON')
+  chrome.storage.local.remove('events')
+  chrome.storage.local.remove('web_messages')
+  chrome.storage.local.remove('user')
+}
+
+
+//
 // Set initial value
+//
 chrome.storage.local.get(['clipJSON'], (result) => {
-  const data = result.clipJSON
-  document.getElementById('token').innerText = data.clip.token
-  document.getElementById('idfv').innerText = data.clip.idfv
-  document.getElementById('user_id').innerText = data.clip.user_annotation || 'none'
-  document.getElementById('sdk_version').innerText = data.clip.sdk_version || 'none'
+  updateClip(result.clipJSON.clip)
 });
-
 chrome.storage.local.get(['events'], (result) => {
-  const list = document.getElementById('logs')
+  if (!result.events) return false;
+
   result.events.forEach(event => {
-    const item = document.createElement('li')
-    item.innerText = JSON.stringify(event)
-    list.append(item)
+    appendLog('Event', JSON.stringify(event))
   })
 });
-
 chrome.storage.local.get(['web_messages'], (result) => {
-  const list = document.getElementById('logs')
+  if (!result.web_messages) return false;
+
   result.web_messages.forEach(msg => {
-    const item = document.createElement('li')
-    item.innerText = JSON.stringify(msg)
-    list.append(item)
+    appendLog('Message', JSON.stringify(msg))
   })
 });
-
 chrome.storage.local.get(['user'], (result) => {
-  const list = document.getElementById('logs')
-  Object.keys(result.user).forEach(key => {
-    const item = document.createElement('li')
-    item.innerText = `${key}: ${JSON.stringify(result.user[key])}`
-    list.append(item)
+  if (!result.user) return false;
+
+  Object.keys(result.user).forEach(profileKey => {
+    appendLog('User Profile', `${profileKey}: ${JSON.stringify(result.user[profileKey])}`)
   })
 });
 
+//
 // Observe changes to storage which is triggered by upload requests
+//
 chrome.storage.onChanged.addListener((changes, namespace) => {
-  console.log('changed!', changes)
   if (namespace !== 'local') return false;
 
   for (key in changes) {
-    const list = document.getElementById('logs')
-
     switch (key) {
       case 'clipJSON':
-        const data = changes['clipJSON'].newValue
-        document.getElementById('token').innerText = data.clip.token
-        document.getElementById('idfv').innerText = data.clip.idfv
-        document.getElementById('user_id').innerText = data.clip.user_annotation || 'none'
-        document.getElementById('sdk_version').innerText = data.clip.sdk_version || 'none'
+        const value = changes['clipJSON'].newValue;
+        if (!value) continue;
+
+        updateClip(value.clip)
         break;
       case 'events':
         const events = changes['events'].newValue
+        if (!events) continue;
+
         events.forEach(event => {
-          const item = document.createElement('li')
-          item.innerText = JSON.stringify(event)
-          list.append(item)
+          appendLog('Event', JSON.stringify(event))
         })
         break;
       case 'web_messages':
         const messages = changes['web_messages'].newValue
+        if (!messages) continue;
+
         messages.forEach(msg => {
-          const item = document.createElement('li')
-          item.innerText = JSON.stringify(msg)
-          list.append(item)
+          appendLog('Message', JSON.stringify(msg))
         })
         break;
       case 'user':
         const userProfiles = changes['user'].newValue
+        if (!userProfiles) continue;
+
         Object.keys(userProfiles).forEach(profileKey => {
-          const item = document.createElement('li')
-          item.innerText = `${profileKey}: ${JSON.stringify(userProfiles[profileKey])}`
-          list.append(item)
+          appendLog('User Profile', `${profileKey}: ${JSON.stringify(result.user[profileKey])}`)
         })
         break;
       default:
@@ -81,3 +98,10 @@ chrome.storage.onChanged.addListener((changes, namespace) => {
     }
   }
 });
+
+//
+// Attach events
+//
+document.getElementById('delete').addEventListener('click', () => {
+  removeStorage()
+})

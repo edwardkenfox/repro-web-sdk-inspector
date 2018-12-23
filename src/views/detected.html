@@ -1,40 +1,108 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <style>
-      body {
-        width: 320px;
-        height: 320px;
-      }
-    </style>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
+    <link rel="stylesheet" href="./popup.css">
+    <script defer src="./material.min.js"></script>
   </head>
   <body>
-    <!-- TODO: UIなおす -->
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header mdl-layout--fixed-tabs">
+      <header class="mdl-layout__header">
+        <div class="mdl-layout__tab-bar mdl-js-ripple-effect">
+          <a href="#fixed-tab-1" class="mdl-layout__tab is-active">Tracking Data</a>
+          <a href="#fixed-tab-2" class="mdl-layout__tab">Clip Log</a>
+        </div>
+      </header>
+      <main class="mdl-layout__content">
+        <section class="mdl-layout__tab-panel is-active" id="fixed-tab-1">
+          <div class="page-content">
+            <div class="mdl-grid">
+              <div class="mdl-cell mdl-cell--12-col">Tracking Data</div>
+            </div>
+            <div class="mdl-grid">
+              <table class="mdl-data-table mdl-js-data-table mdl-cell mdl-cell--12-col">
+                <tbody>
+                  <tr>
+                    <th>Token</th>
+                    <td id="token">Token</td>
+                  </tr>
+                  <tr>
+                    <th>IDFV</th>
+                    <td id="idfv">IDFV</td>
+                  </tr>
+                  <tr>
+                    <th>User ID</th>
+                    <td id="user_annotation">User ID</td>
+                  </tr>
+                  <tr>
+                    <th>SDK Version</th>
+                    <td id="sdk_version">SDK Version</td>
+                  </tr>
+                  <tr>
+                    <th>IP Address</th>
+                    <td id="ip_address">IP Address</td>
+                  </tr>
+                  <tr>
+                    <th>Device</th>
+                    <td id="device">Device</td>
+                  </tr>
+                  <tr>
+                    <th>Network</th>
+                    <td id="network">Network</td>
+                  </tr>
+                  <tr>
+                    <th>OS</th>
+                    <td id="os">OS</td>
+                  </tr>
+                  <tr>
+                    <th>OS Version</th>
+                    <td id="os_version">OS Version</td>
+                  </tr>
+                  <tr>
+                    <th>Browser</th>
+                    <td id="browser">Browser</td>
+                  </tr>
+                  <tr>
+                    <th>Browser Version</th>
+                    <td id="browser_version">Browser Version</td>
+                  </tr>
+                  <tr>
+                    <th>User Agent</th>
+                    <td id="user_agent">User Agent</td>
+                  </tr>
+                  <tr>
+                    <th>Push Enabled</th>
+                    <td id="push_enabled">Push Enabled</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+        <section class="mdl-layout__tab-panel" id="fixed-tab-2">
+          <div class="page-content">
+            <div class="mdl-grid">
+              <div class="mdl-cell mdl-cell--7-col">Clip Log</div>
+              <div class="mdl-cell mdl-cell--1-col">
+                <i class="material-icons md-dark" id="delete">delete_forever</i>
+              </div>
+            </div>
+            <div class="mdl-grid">
+              <table class="mdl-data-table mdl-js-data-table mdl-cell mdl-cell--12-col" id="log">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Data</th>
+                  </tr>
+                </thead>
+                <tbody>
+                </tbody>
+              </table>
+          </div>
+        </section>
+      </main>
+    </div>
     <script src="popup.js"></script>
-    <h1>Repro Web SDK detected!</h1>
-    <div>clipJSON</div>
-    <table>
-      <tbody>
-        <tr>
-          <th>Token</th>
-          <td id="token">Token</td>
-        </tr>
-        <tr>
-          <th>IDFV</th>
-          <td id="idfv">IDFV</td>
-        </tr>
-        <tr>
-          <th>User ID</th>
-          <td id="user_id">User ID</td>
-        </tr>
-        <tr>
-          <th>SDK Version</th>
-          <td id="sdk_version">SDK Version</td>
-        </tr>
-      </tbody>
-    </table>
-    <div>Clip Log</div>
-    <ul id="logs">
-    </ul>
   </body>
 </html>

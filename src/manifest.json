@@ -8,7 +8,7 @@
       "48": "images/logo-inactive.png",
       "128": "images/logo-inactive.png"
     },
-    "default_title": "Repro Devtools",
+    "default_title": "Repro Web SDK Viewer",
     "default_popup": "views/not_detected.html"
   },
   "background": {

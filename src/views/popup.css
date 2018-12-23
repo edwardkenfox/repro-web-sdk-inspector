@@ -1,0 +1,17 @@
+body {
+  width: 480px;
+  height: 480px;
+}
+
+.mdl-data-table td {
+  max-width: 50vw;
+  overflow: scroll;
+}
+
+.material-icons {
+  cursor: pointer;
+}
+
+#fixed-tab-2 .mdl-cell.mdl-cell--1-col {
+  height: 20px;
+}

@@ -10,14 +10,14 @@ const updateClip = clip => {
 const appendLog = (type, content) => {
   const table = document.getElementById('log')
 
-  let newRow = table.insertRow(1);
-  let newCell = newRow.insertCell(0);
-  let newText = document.createTextNode(content);
-  newCell.appendChild(newText);
+  const row = table.insertRow(1);
+  let cell = row.insertCell(0);
+  let text = document.createTextNode(content);
+  cell.appendChild(text);
 
-  newCell = newRow.insertCell(0);
-  newText = document.createTextNode(type);
-  newCell.appendChild(newText);
+  cell = row.insertCell(0);
+  text = document.createTextNode(type);
+  cell.appendChild(text);
 }
 const removeStorage = () => {
   chrome.storage.local.remove('clipJSON')
@@ -31,6 +31,8 @@ const removeStorage = () => {
 // Set initial value
 //
 chrome.storage.local.get(['clipJSON'], (result) => {
+  if (!result.clipJSON) return false;
+
   updateClip(result.clipJSON.clip)
 });
 chrome.storage.local.get(['events'], (result) => {
@@ -104,4 +106,5 @@ chrome.storage.onChanged.addListener((changes, namespace) => {
 //
 document.getElementById('delete').addEventListener('click', () => {
   removeStorage()
+  window.close()
 })

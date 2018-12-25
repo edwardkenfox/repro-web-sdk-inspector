@@ -5,7 +5,7 @@ const detectReproWebSDK = (win) => {
   setTimeout(() => {
     win.postMessage({
       reproDetected: !!window.reproio,
-      clipJSON: JSON.stringify(window.reproio._clipJSON),
+      clipJSON: !!window.reproio ? JSON.stringify(window.reproio._clipJSON) : '',
       initial: true,
     }, '*')
   }, 100)
@@ -14,11 +14,9 @@ const detectReproWebSDK = (win) => {
   const i = setInterval(() => {
     win.postMessage({
       reproDetected: !!window.reproio,
-      clipJSON: JSON.stringify(window.reproio._clipJSON),
+      clipJSON: !!window.reproio ? JSON.stringify(window.reproio._clipJSON) : '',
     }, '*')
   }, 2000)
-
-  if (!window.reproio) clearInterval(i);
 }
 
 // Inject script to DOM to get value of reproio tracker object in the main page context

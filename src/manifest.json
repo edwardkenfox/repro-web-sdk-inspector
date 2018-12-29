@@ -39,5 +39,6 @@
     "48": "images/logo-inactive.png",
     "128": "images/logo-inactive.png"
   },
+  "content_security_policy": "script-src 'self' https://code.getmdl.io; object-src 'self'",
   "manifest_version": 2
 }

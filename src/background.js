@@ -29,7 +29,11 @@ chrome.runtime.onMessage.addListener((req, sender) => {
         popup: req.reproDetected ? 'views/detected.html' : 'views/not_detected.html'
       })
     }
-    chrome.storage.local.set({'clipJSON': JSON.parse(req.clipJSON)});
+    chrome.storage.local.get({ clipJSON: null }, result => {
+      const map = result.clipJSON || {}
+      map[req.origin] = JSON.parse(req.clipJSON)
+      chrome.storage.local.set({ clipJSON: map });
+    })
   } else if (req.copyToClipBoad) {
     saveToClipboard(req.text);
   }
@@ -37,30 +41,34 @@ chrome.runtime.onMessage.addListener((req, sender) => {
 
 chrome.webRequest.onBeforeRequest.addListener((details) => {
   if (details.url.includes('clip-transporter.reproio.com/active/upload') && details.method === 'POST') {
+    if (!details.initiator) return false
+
     const body = Decoder.decode(details.requestBody.raw[0].bytes)
     const clip = JSON.parse(body).clip
+    const origin = (new URL(details.initiator)).origin
 
     if (clip.custom_event.length > 0) {
-      chrome.storage.local.get(['events'], (result) => {
-        const events = result.events || []
-        events.push(clip.custom_event)
-        chrome.storage.local.set({ events });
+      chrome.storage.local.get({ events: null }, result => {
+        const map = result.events || {}
+        map[origin] = map[origin] === undefined ? [] : map[origin]
+        map[origin].push(clip.custom_event)
+        chrome.storage.local.set({ events: map });
       })
     }
     if (clip.web_messages.length > 0) {
-      chrome.storage.local.get(['web_messages'], (result) => {
-        const web_messages = result.web_messages || []
-        web_messages.push(clip.web_messages)
-        chrome.storage.local.set({ web_messages });
+      chrome.storage.local.get({ web_messages: null }, result => {
+        const map = result.web_messages || {}
+        map[origin] = map[origin] === undefined ? [] : map[origin]
+        map[origin].push(clip.web_messages)
+        chrome.storage.local.set({ web_messages: map });
       })
     }
     if (Object.keys(clip.user).length > 0) {
-      chrome.storage.local.set({ user: clip.user });
-
-      chrome.storage.local.get(['user'], (result) => {
-        const userProfiles = Object.keys(result.user).length !== 0 ? result.user : {}
-        const val = Object.assign({}, userProfiles, clip.user)
-        chrome.storage.local.set({ user: val });
+      chrome.storage.local.get({ user: null }, result => {
+        const map = result.user || {}
+        map[origin] = map[origin] === undefined ? [] : map[origin]
+        map[origin] = clip.user
+        chrome.storage.local.set({ user: map });
       })
     }
   }

@@ -1,6 +1,6 @@
 {
   "name": "Web SDK Inspector",
-  "version": "1.0",
+  "version": "1.0.1",
   "description": "Don't worry, debug happy.",
   "browser_action": {
     "default_icon": {

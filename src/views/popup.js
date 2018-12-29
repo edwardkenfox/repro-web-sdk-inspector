@@ -30,30 +30,62 @@ const removeStorage = () => {
 //
 // Set initial value
 //
-chrome.storage.local.get(['clipJSON'], (result) => {
+chrome.storage.local.get('clipJSON', (result) => {
   if (!result.clipJSON) return false;
 
-  updateClip(result.clipJSON.clip)
+  chrome.tabs.query({
+    active: true,
+    currentWindow: true
+  }, tabs => {
+    const origin = (new URL(tabs[0].url)).origin
+    if (!result.clipJSON[origin]) return false
+
+    updateClip(result.clipJSON[origin].clip)
+  })
 });
-chrome.storage.local.get(['events'], (result) => {
+chrome.storage.local.get('events', (result) => {
   if (!result.events) return false;
 
-  result.events.forEach(event => {
-    appendLog('Event', JSON.stringify(event))
+  chrome.tabs.query({
+    active: true,
+    currentWindow: true
+  }, tabs => {
+    const origin = (new URL(tabs[0].url)).origin
+    if (!result.events[origin]) return false
+
+    result.events[origin].forEach(event => {
+      appendLog('Event', JSON.stringify(event))
+    })
   })
 });
-chrome.storage.local.get(['web_messages'], (result) => {
+chrome.storage.local.get('web_messages', (result) => {
   if (!result.web_messages) return false;
 
-  result.web_messages.forEach(msg => {
-    appendLog('Message', JSON.stringify(msg))
+  chrome.tabs.query({
+    active: true,
+    currentWindow: true
+  }, tabs => {
+    const origin = (new URL(tabs[0].url)).origin
+    if (!result.web_messages[origin]) return false
+
+    result.web_messages[origin].forEach(msg => {
+      appendLog('Message', JSON.stringify(msg))
+    })
   })
 });
-chrome.storage.local.get(['user'], (result) => {
+chrome.storage.local.get('user', (result) => {
   if (!result.user) return false;
 
-  Object.keys(result.user).forEach(profileKey => {
-    appendLog('User Profile', `${profileKey}: ${JSON.stringify(result.user[profileKey])}`)
+  chrome.tabs.query({
+    active: true,
+    currentWindow: true
+  }, tabs => {
+    const origin = (new URL(tabs[0].url)).origin
+    if (!result.user[origin]) return false
+
+    Object.keys(result.user[origin]).forEach(profileKey => {
+      appendLog('User Profile', `${profileKey}: ${JSON.stringify(result.user[origin][profileKey])}`)
+    })
   })
 });
 
@@ -62,43 +94,49 @@ chrome.storage.local.get(['user'], (result) => {
 //
 chrome.storage.onChanged.addListener((changes, namespace) => {
   if (namespace !== 'local') return false;
+  chrome.tabs.query({
+    active: true,
+    currentWindow: true
+  }, tabs => {
+    const origin = (new URL(tabs[0].url)).origin
+    for (key in changes) {
+      switch (key) {
+        case 'clipJSON':
+          debugger
+          const value = changes['clipJSON'].newValue[origin];
+          if (!value) continue;
 
-  for (key in changes) {
-    switch (key) {
-      case 'clipJSON':
-        const value = changes['clipJSON'].newValue;
-        if (!value) continue;
+          updateClip(value.clip)
+          break;
+        case 'events':
+          const events = changes['events'].newValue[origin]
+          if (!events) continue;
 
-        updateClip(value.clip)
-        break;
-      case 'events':
-        const events = changes['events'].newValue
-        if (!events) continue;
+          events.forEach(event => {
+            appendLog('Event', JSON.stringify(event))
+          })
+          break;
+        case 'web_messages':
+          const messages = changes['web_messages'].newValue[origin]
+          if (!messages) continue;
 
-        events.forEach(event => {
-          appendLog('Event', JSON.stringify(event))
-        })
-        break;
-      case 'web_messages':
-        const messages = changes['web_messages'].newValue
-        if (!messages) continue;
+          messages.forEach(msg => {
+            appendLog('Message', JSON.stringify(msg))
+          })
+          break;
+        case 'user':
+          const userProfiles = changes['user'].newValue[origin]
+          if (!userProfiles) continue;
 
-        messages.forEach(msg => {
-          appendLog('Message', JSON.stringify(msg))
-        })
-        break;
-      case 'user':
-        const userProfiles = changes['user'].newValue
-        if (!userProfiles) continue;
-
-        Object.keys(userProfiles).forEach(profileKey => {
-          appendLog('User Profile', `${profileKey}: ${JSON.stringify(result.user[profileKey])}`)
-        })
-        break;
-      default:
-        break;
+          Object.keys(userProfiles).forEach(profileKey => {
+            appendLog('User Profile', `${profileKey}: ${JSON.stringify(result.user[profileKey])}`)
+          })
+          break;
+        default:
+          break;
+      }
     }
-  }
+  })
 });
 
 //

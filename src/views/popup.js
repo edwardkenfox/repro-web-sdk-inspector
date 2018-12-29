@@ -102,7 +102,6 @@ chrome.storage.onChanged.addListener((changes, namespace) => {
     for (key in changes) {
       switch (key) {
         case 'clipJSON':
-          debugger
           const value = changes['clipJSON'].newValue[origin];
           if (!value) continue;
 

@@ -5,7 +5,7 @@ const detectReproWebSDK = (win) => {
   setTimeout(() => {
     win.postMessage({
       reproDetected: !!window.reproio,
-      clipJSON: !!window.reproio ? JSON.stringify(window.reproio._clipJSON) : '',
+      clipJSON: !!window.reproio ? JSON.stringify(window.reproio._clip.toJSON) : '',
       initial: true,
       origin: location.origin,
     }, '*')
@@ -15,7 +15,7 @@ const detectReproWebSDK = (win) => {
   const i = setInterval(() => {
     win.postMessage({
       reproDetected: !!window.reproio,
-      clipJSON: !!window.reproio ? JSON.stringify(window.reproio._clipJSON) : '',
+      clipJSON: !!window.reproio ? JSON.stringify(window.reproio._clip.toJSON) : '',
       origin: location.origin,
     }, '*')
   }, 2000)

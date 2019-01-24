@@ -1,11 +1,11 @@
 // Check existence of reproio tracker object in the main page context
-// Sends message to background script with clipJSON as payload
+// Sends message to background script with reproio._clip.toJSON as payload
 const detectReproWebSDK = (win) => {
   // Delay to wait for installScript to finish
   setTimeout(() => {
     win.postMessage({
       reproDetected: !!window.reproio,
-      clipJSON: !!window.reproio ? JSON.stringify(window.reproio._clipJSON) : '',
+      clipJSON: !!window.reproio ? JSON.stringify(window.reproio._clipJSON ? window.reproio._clipJSON : window.reproio._clip.toJSON) : '',
       initial: true,
       origin: location.origin,
     }, '*')
@@ -15,7 +15,7 @@ const detectReproWebSDK = (win) => {
   const i = setInterval(() => {
     win.postMessage({
       reproDetected: !!window.reproio,
-      clipJSON: !!window.reproio ? JSON.stringify(window.reproio._clipJSON) : '',
+      clipJSON: !!window.reproio ? JSON.stringify(window.reproio._clipJSON ? window.reproio._clipJSON : window.reproio._clip.toJSON) : '',
       origin: location.origin,
     }, '*')
   }, 2000)

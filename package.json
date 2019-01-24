@@ -1,0 +1,20 @@
+{
+  "name": "repro-web-sdk-inspector",
+  "version": "1.0.1",
+  "description": "Chrome Extension for inspecting Repro Web SDK",
+  "main": "index.js",
+  "scripts": {
+    "build": "zip -r build/web-sdk-inspector.zip src"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/edwardkenfox/repro-web-sdk-inspector.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/edwardkenfox/repro-web-sdk-inspector/issues"
+  },
+  "homepage": "https://github.com/edwardkenfox/repro-web-sdk-inspector#readme"
+}

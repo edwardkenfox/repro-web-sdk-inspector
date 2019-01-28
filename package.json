@@ -4,7 +4,7 @@
   "description": "Chrome Extension for inspecting Repro Web SDK",
   "main": "index.js",
   "scripts": {
-    "build": "zip -r build/web-sdk-inspector.zip src"
+    "build": "mkdir -p build/ && zip -r build/web-sdk-inspector.zip src"
   },
   "repository": {
     "type": "git",

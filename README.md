@@ -1,3 +1,7 @@
+# Deprecated
+
+This repository is now maintained at [reproio/web-sdk-inspector](https://github.com/reproio/web-sdk-inspector)
+
 # Web SDK Inspector
 
 Chrome Extension for inspecting Repro Web SDK
